@@ -1,3 +1,7 @@
+
+# test_practice
+Writing Test Code with React Testing Library 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
