@@ -1,24 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import Fetch from './fetch';
+import { worker } from './mocks/browser';
+
+// In order for our mock definition to execute during the runtime, it needs to be imported into our application's code. However, since mocking is a development-oriented technique, we will be importing our src/mocks/browser.js file conditionally, depending on the current environment.
+// It's not recommended to include Mock Service Worker in production. Doing so may lead to a distorted experience for your users.
+
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <Fetch url="/greeting" />
   );
 }
 
