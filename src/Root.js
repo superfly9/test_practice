@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 function Root() {
   return (
@@ -8,10 +8,10 @@ function Root() {
             <nav>
             <ul>
                 <li>
-                <a href={`/fetch`}>Fetch</a>
+                <Link to="fetch">Fetch</Link>
                 </li>
                 <li>
-                <a href={`/counter`}>Counter</a>
+                <Link to="counter">Counter</Link>
                 </li>
             </ul>
             </nav>
