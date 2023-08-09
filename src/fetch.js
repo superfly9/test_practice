@@ -1,5 +1,4 @@
-import React, {useState, useReducer, useEffect} from 'react'
-// import axios from 'axios'
+import React, {useState, useReducer, useEffect, useCallback} from 'react'
 
 const initialState = {
   error: null,
@@ -26,13 +25,13 @@ function greetingReducer(state, action) {
   }
 }
 
-export default function Fetch({url}) {
+export default function Fetch({url = '/greeting'}) {
   const [{error, greeting}, dispatch] = useReducer(
     greetingReducer,
     initialState,
   )
-  const [buttonClicked, setButtonClicked] = useState(false)
-
+  const [buttonClicked, setButtonClicked] = useState(false);
+  
   useEffect(()=>{
     //cleanup
     //Unmounts React trees that were mounted with render.
@@ -45,13 +44,11 @@ export default function Fetch({url}) {
 
   const fetchGreeting = async url => {
       try {
+          // const response = await axios(url);
           const response = await fetch(url);
-        //   console.log('[response]:',response)
           const result = await response.json();
-          console.log(result)
-              const {data} = result
+              const {data} = result;
               const {greeting} = data
-            //   console.log('[grreeting]:',greeting)
               dispatch({type: 'SUCCESS', greeting})
               setButtonClicked(true)
       } catch (error) {
