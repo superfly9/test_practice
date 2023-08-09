@@ -1,0 +1,1 @@
+export { MAX_COUNT, MIN_COUNT} from './counter';

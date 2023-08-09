@@ -1,10 +1,15 @@
 import React, { useCallback, useState } from 'react'
+import { MAX_COUNT, MIN_COUNT } from '../../constant';
 
 function Counter() {
   const [count, setCount] = useState(0);
 
-  const increaseAmount = useCallback(() => setCount(c => c+1),[]);
-  const decreaseAmount = useCallback(() => setCount(c => c-1),[]);
+  const increaseAmount = useCallback(() => {
+    setCount(c => c >= MAX_COUNT ? c : c+1 )
+  },[]);
+  const decreaseAmount = useCallback(() => {
+    setCount(c => c <= MIN_COUNT ? 0 : c-1)
+  },[]);
 
   return (
       <>
