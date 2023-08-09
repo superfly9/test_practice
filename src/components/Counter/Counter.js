@@ -5,7 +5,6 @@ function Counter() {
 
   const handleClick = (callback) => {
     setCount(callback);
-    // count => count + 1
   }
 
   const increaseAmount =  useCallback((count)=>count+ 1,[]);
@@ -16,7 +15,7 @@ function Counter() {
         <button onClick={()=>handleClick(increaseAmount)}>Increase Count</button>
         <button onClick={()=>handleClick(decreaeAmount)}>Decrease Count</button>
         <br />
-        Count :{count}
+        Count : <span data-testid="counter">{count}</span>
       </>
   )
 }
