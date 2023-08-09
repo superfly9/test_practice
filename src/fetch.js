@@ -1,4 +1,4 @@
-import React, {useState, useReducer, useEffect, useCallback} from 'react'
+import React, {useState, useReducer, useEffect } from 'react'
 
 const initialState = {
   error: null,
@@ -44,7 +44,6 @@ export default function Fetch({url = '/greeting'}) {
 
   const fetchGreeting = async url => {
       try {
-          // const response = await axios(url);
           const response = await fetch(url);
           const result = await response.json();
               const {data} = result;
