@@ -1,2 +1,2 @@
-export const MAX_COUNT = 3;
-export const MIN_COUNT = 0;
+export const MAX_COUNT = 10;
+export const MIN_COUNT = -10;
