@@ -22,7 +22,7 @@ function Counter() {
       <>
       <label htmlFor='amount'>
         클릭시 변화시킬 Count :  
-        <input data-testid="amount" value={amount} onChange={handleInputChange} />
+        <input id='amount' value={amount} onChange={handleInputChange} />
       </label>
         <button onClick={handleIncreasAmount}>Increase Count</button>
         <button onClick={handleDecreaseAmount}>Decrease Count</button>

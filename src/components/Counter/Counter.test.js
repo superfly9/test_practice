@@ -60,12 +60,26 @@ describe('렌더링 테스트', ()=>{
         expect(Number(screen.getByTestId('counter').textContent)).toBe(MIN_COUNT);
     })
 
-    test('counter의 변화량을 결정하는 amount의 기본 값은 1이다.', async ()=>{
+    describe('counter의 변화량을 결정하는 amount가 존재한다.', ()=>{
 
-        render(<Counter />);
-        const amount = await screen.findByTestId('amount');
-        expect(amount).toBeInTheDocument();
-        expect(amount).toHaveValue();
-        expect(amount.value).toBe("1");
+        test('counter의 변화량을 결정하는 amount의 기본 값은 1이다.', async ()=>{
+    
+            render(<Counter />);
+            // const amount = await screen.findByTestId('amount');
+            const amount = screen.getByLabelText('클릭시 변화시킬 Count :');
+            expect(amount).toBeInTheDocument();
+            expect(amount).toHaveValue();
+            expect(amount.value).toBe("1");
+        })
+
+        test('amount의 값을 5로 수정할 수 있다.', async ()=>{
+    
+            render(<Counter />);
+            const amount = screen.getByLabelText('클릭시 변화시킬 Count :');
+            expect(amount).toBeInTheDocument();
+            await userEvent.type(amount ,"{backspace}");
+            await userEvent.type(amount , "5");
+            expect(amount.value).toBe("5");
+        })
     })
 })
