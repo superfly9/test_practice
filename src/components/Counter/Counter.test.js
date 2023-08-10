@@ -4,16 +4,18 @@ import userEvent from '@testing-library/user-event'
 import { MAX_COUNT, MIN_COUNT } from "../../constant"
 
 describe('렌더링 테스트', ()=>{
+    test('첫 번째 렌더링시 화면 요소들을 체크한다.', ()=>{
+            render(<Counter />);
+            expect(screen.getByText('Increase Count')).toBeInTheDocument();
+            expect(screen.getByText('Decrease Count')).toBeInTheDocument();
+            expect(screen.getByTestId('counter').textContent).toBe("0");
+        }
+    );
 
-    test('첫 번째 렌더링시 화면 요소들을 체크한다.', async ()=>{
+})
 
-        render(<Counter />);
+describe('증가/감소 버튼의 동작을 체크한다.',()=>{
 
-        expect(screen.getByText('Increase Count')).toBeInTheDocument();
-        expect(screen.getByText('Decrease Count')).toBeInTheDocument();
-        expect(screen.getByTestId('counter').textContent).toBe("0");
-    })
-    
     test('증가 버튼 클릭시 카운트가 1씩 증가한다.', async ()=>{
 
         render(<Counter />);
@@ -59,27 +61,45 @@ describe('렌더링 테스트', ()=>{
         }
         expect(Number(screen.getByTestId('counter').textContent)).toBe(MIN_COUNT);
     })
+})
 
-    describe('counter의 변화량을 결정하는 amount가 존재한다.', ()=>{
 
-        test('counter의 변화량을 결정하는 amount의 기본 값은 1이다.', async ()=>{
-    
-            render(<Counter />);
-            // const amount = await screen.findByTestId('amount');
-            const amount = screen.getByLabelText('클릭시 변화시킬 Count :');
-            expect(amount).toBeInTheDocument();
-            expect(amount).toHaveValue();
-            expect(amount.value).toBe("1");
-        })
+describe('counter의 변화량을 결정하는 amount가 존재한다.', ()=>{
 
-        test('amount의 값을 5로 수정할 수 있다.', async ()=>{
-    
-            render(<Counter />);
-            const amount = screen.getByLabelText('클릭시 변화시킬 Count :');
-            expect(amount).toBeInTheDocument();
-            await userEvent.type(amount ,"{backspace}");
-            await userEvent.type(amount , "5");
-            expect(amount.value).toBe("5");
-        })
+    test('counter의 변화량을 결정하는 amount의 기본 값은 1이다.', async ()=>{
+
+        render(<Counter />);
+        const amount = screen.getByLabelText('클릭시 변화시킬 Count :',{ selector : 'input' });
+        expect(amount).toBeInTheDocument();
+        expect(amount).toHaveValue();
+        expect(amount.value).toBe("1");
+    })
+
+    test('amount의 값을 5로 수정할 수 있다.', async ()=>{
+
+        render(<Counter />);
+        const amount = screen.getByLabelText('클릭시 변화시킬 Count :'); // label의 for와 같은 id가진 input이 걸림
+        // This will search for the label that matches the given TextMatch, then find the element associated with that label.
+        expect(amount).toBeInTheDocument();
+        await userEvent.type(amount ,"{backspace}");
+        await userEvent.type(amount , "5");
+        expect(amount.value).toBe("5");
+    })
+
+    test('amount의 값이 5일때 counter의 값이 5씩 변한다.', async ()=>{
+
+        render(<Counter />);
+        const amount = screen.getByLabelText('클릭시 변화시킬 Count :',{ selector :'input' });
+        await userEvent.type(amount ,"{backspace}");
+        await userEvent.type(amount , "5");
+        expect(amount.value).toBe("5");
+
+        const increaseBtn = await screen.findByText('Increase Count');
+        await userEvent.click(increaseBtn);
+        expect(screen.getByTestId('counter').textContent).toBe("5")
+
+        await userEvent.click(increaseBtn);
+        expect(screen.getByTestId('counter').textContent).toBe("10")
+        
     })
 })
