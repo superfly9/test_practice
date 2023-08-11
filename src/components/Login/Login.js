@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { errMsg, idRegex, passwordRegex } from "../../constant/login";
 import useInputChange from "../../hooks/useInputChange";
 
@@ -30,6 +31,7 @@ function Login() {
     return isValidPassword;
   },[password]);
 
+  const navigate = useNavigate();
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -54,10 +56,11 @@ function Login() {
           },
           body: JSON.stringify({ id, password }),
         });
-        setStatus("resolved");
         if (!response.ok) {
           throw new Error();
         }
+        setStatus("resolved");
+        navigate('/')
       } catch (e) {
         console.log(e);
         setStatus("rejected");
@@ -67,6 +70,7 @@ function Login() {
       }
     },
     [
+      navigate,
       idValidator,
       passwordValidator,
       id,

@@ -2,6 +2,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Login from "./Login";
 
+// https://jestjs.io/docs/mock-functions#mock-property
+const mockUsedNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+   ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockUsedNavigate,
+}));
+
 const setup = () => render(<Login />);
 
 describe("로그인 페이지의 유저 이벤트를 확인할 수 있다.", () => {
@@ -36,6 +43,7 @@ describe("로그인 페이지의 유저 이벤트를 확인할 수 있다.", () 
       await userEvent.click(screen.getByRole("button"));
   
       expect(await screen.findByText('로그인 성공')).toBeInTheDocument();
+      expect(mockUsedNavigate).toHaveBeenCalledTimes(1);
     })
   
     test("아이디 유효성 체크를 통과하지 못하면 에러 메시지를 띄운다.", async () => {
