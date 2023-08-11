@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { errMsg, idRegex, passwordRegex } from "../../constant/login";
 import useInputChange from "../../hooks/useInputChange";
 
@@ -30,6 +31,7 @@ function Login() {
     return isValidPassword;
   },[password]);
 
+  const navigate = useNavigate();
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -54,10 +56,11 @@ function Login() {
           },
           body: JSON.stringify({ id, password }),
         });
-        setStatus("resolved");
         if (!response.ok) {
           throw new Error();
         }
+        setStatus("resolved");
+        navigate('/')
       } catch (e) {
         console.log(e);
         setStatus("rejected");
@@ -67,6 +70,7 @@ function Login() {
       }
     },
     [
+      navigate,
       idValidator,
       passwordValidator,
       id,
@@ -82,7 +86,7 @@ function Login() {
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="id">아이디</label>
           <input id="id" value={id} onChange={handleIdChange} />
-          {idError && <span>{errMsg['id']}</span>}
+          {idError && <span data-testid="id-error-message">{errMsg['id']}</span>}
         </div>
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="password">비밀번호</label>
@@ -94,7 +98,7 @@ function Login() {
             type="password"
             autoComplete="new-password"
           />
-          {passwordError && <span>{errMsg['password']}</span>}
+          {passwordError && <span data-testid="password-error-message">{errMsg['password']}</span>}
         </div>
         <button onClick={handleSubmit}>로그인</button>
       </form>
