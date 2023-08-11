@@ -82,7 +82,7 @@ function Login() {
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="id">아이디</label>
           <input id="id" value={id} onChange={handleIdChange} />
-          {idError && <span>{errMsg['id']}</span>}
+          {idError && <span data-testid="id-error-message">{errMsg['id']}</span>}
         </div>
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="password">비밀번호</label>
@@ -94,7 +94,7 @@ function Login() {
             type="password"
             autoComplete="new-password"
           />
-          {passwordError && <span>{errMsg['password']}</span>}
+          {passwordError && <span data-testid="password-error-message">{errMsg['password']}</span>}
         </div>
         <button onClick={handleSubmit}>로그인</button>
       </form>
