@@ -1,32 +1,50 @@
 import React, { useCallback, useState } from "react";
-import { MAX_LENGTH } from "../../constant/login";
+import { errMsg, idRegex, passwordRegex } from "../../constant/login";
 import useInputChange from "../../hooks/useInputChange";
-import { maxLengthCheck } from "../../util/lengthCheck";
 
 function Login() {
-  const [id, handleIdChange, handleIdReset, idErrorMsg] = useInputChange(
-    "",
-    (val) => maxLengthCheck(val, "id"),
-    { errorMsg: `id는 ${MAX_LENGTH.get("id")}이내여야 합니다.` }
-  );
+
+  const [id, handleIdChange, handleIdReset] = useInputChange("");
+  const [idError,setIdError] = useState(false)
+  const [passwordError,setPasswordError] = useState(false)
 
   const [
     password,
     handlePasswordChange,
     handlePasswordReset,
-    passwordErrorMsg,
-  ] = useInputChange("", (val) => maxLengthCheck(val, "password"), {
-    errorMsg: `password는 ${MAX_LENGTH.get("password")}이내여야 합니다.`,
-  });
+  ] = useInputChange("");
+
 
   const [status, setStatus] = useState("idle");
   // idle, pending, resolved, rejected
+
+  const idValidator = useCallback(() => {
+    const isValidId = idRegex.test(id)
+
+    return isValidId;
+  },[id]);
+
+  const passwordValidator = useCallback(() => {
+    const isValidPassword = passwordRegex.test(password)
+
+    return isValidPassword;
+  },[password]);
+
 
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
 
-      if (idErrorMsg || passwordErrorMsg) return;
+      const isValidId = idValidator();
+      const isValidPassword = passwordValidator();
+
+      if (!isValidId || !isValidPassword) {
+        setIdError(isValidId ? false : true);
+        setPasswordError(isValidPassword ? false : true);
+
+        return;
+      }
+
       setStatus("pending");
       try {
         const response = await fetch("/login", {
@@ -49,10 +67,10 @@ function Login() {
       }
     },
     [
+      idValidator,
+      passwordValidator,
       id,
       password,
-      idErrorMsg,
-      passwordErrorMsg,
       handleIdReset,
       handlePasswordReset,
     ]
@@ -64,7 +82,7 @@ function Login() {
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="id">아이디</label>
           <input id="id" value={id} onChange={handleIdChange} />
-          {idErrorMsg && <span>{idErrorMsg}</span>}
+          {idError && <span>{errMsg['id']}</span>}
         </div>
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="password">비밀번호</label>
@@ -76,11 +94,12 @@ function Login() {
             type="password"
             autoComplete="new-password"
           />
-          {passwordErrorMsg && <span>{passwordErrorMsg}</span>}
+          {passwordError && <span>{errMsg['password']}</span>}
         </div>
         <button onClick={handleSubmit}>로그인</button>
       </form>
-      {status === "pending" ? <div>Loading...</div> : null}
+      {status === "resolved"&& <div>로그인 성공</div>}
+      {status === "pending" && <div>Loading...</div>}
     </>
   );
 }
