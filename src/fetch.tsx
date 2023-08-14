@@ -1,11 +1,22 @@
 import React, { useState, useReducer, useEffect } from "react";
 
-const initialState = {
+type Greeting = string | null | undefined;
+interface State {
+  error?: string | null;
+  greeting: Greeting;
+}
+const initialState: State = {
   error: null,
   greeting: null,
 };
 
-function greetingReducer(state, action) {
+interface Action {
+  type: "SUCCESS" | "ERROR" | "";
+  greeting?: Greeting;
+  error?: string | null;
+}
+
+function greetingReducer(state: State, action: Action): State {
   switch (action.type) {
     case "SUCCESS": {
       return {
@@ -51,7 +62,7 @@ export default function Fetch({ url = "/greeting" }) {
       dispatch({ type: "SUCCESS", greeting });
       setButtonClicked(true);
     } catch (error) {
-      dispatch({ type: "ERROR", error });
+      dispatch({ type: "ERROR", error: "Error Occured" });
     }
   };
 
