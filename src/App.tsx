@@ -4,6 +4,7 @@ import { worker } from "./mocks/browser";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
 } from "react-router-dom";
 import Counter from "./components/Counter";
@@ -24,6 +25,7 @@ function App() {
         <Route path="fetch" element={<Fetch />} />
         <Route path="counter" element={<Counter />} />
         <Route path="login" element={<Login />} />
+        <Route path="*" element={<Navigate replace to="/login" />} />
       </Route>
     </>
   );
