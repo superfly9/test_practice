@@ -1,19 +1,19 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 interface Props {
   label: string;
-  terms: string;
-  onChange: () => void;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Search({ label, terms, onChange }: Props) {
+function Search({ label, value, onChange }: Props) {
   return (
     <>
       <label htmlFor="search">{label}</label>
       <input
         id="search"
         name="search"
-        value={terms}
+        value={value}
         onChange={onChange}
         type="text"
       />
