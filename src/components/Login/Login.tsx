@@ -4,36 +4,38 @@ import { errMsg, idRegex, passwordRegex } from "../../constant/login";
 import useInputChange from "../../hooks/useInputChange";
 
 function Login() {
-
   const [id, handleIdChange, handleIdReset] = useInputChange("");
-  const [idError,setIdError] = useState(false)
-  const [passwordError,setPasswordError] = useState(false)
+  const [idError, setIdError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
-  const [
-    password,
-    handlePasswordChange,
-    handlePasswordReset,
-  ] = useInputChange("");
-
+  const [password, handlePasswordChange, handlePasswordReset] =
+    useInputChange("");
 
   const [status, setStatus] = useState("idle");
   // idle, pending, resolved, rejected
 
   const idValidator = useCallback(() => {
-    const isValidId = idRegex.test(id)
+    const isValidId = idRegex.test(id);
 
     return isValidId;
-  },[id]);
+  }, [id]);
 
   const passwordValidator = useCallback(() => {
-    const isValidPassword = passwordRegex.test(password)
+    const isValidPassword = passwordRegex.test(password);
 
     return isValidPassword;
-  },[password]);
+  }, [password]);
 
   const navigate = useNavigate();
 
+<<<<<<< HEAD:src/components/Login/Login.js
   const validatorHandler = () =>{
+=======
+  const handleSubmit = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+
+>>>>>>> main:src/components/Login/Login.tsx
       const isValidId = idValidator();
       const isValidPassword = passwordValidator();
       let notValid = false;
@@ -65,7 +67,7 @@ function Login() {
           throw new Error();
         }
         setStatus("resolved");
-        navigate('/')
+        navigate("/");
       } catch (e) {
         console.log(e);
         setStatus("rejected");
@@ -91,7 +93,9 @@ function Login() {
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="id">아이디</label>
           <input id="id" value={id} onChange={handleIdChange} />
-          {idError && <span data-testid="id-error-message">{errMsg['id']}</span>}
+          {idError && (
+            <span data-testid="id-error-message">{errMsg["id"]}</span>
+          )}
         </div>
         <div style={{ display: "grid", gap: "20px" }}>
           <label htmlFor="password">비밀번호</label>
@@ -103,11 +107,15 @@ function Login() {
             type="password"
             autoComplete="new-password"
           />
-          {passwordError && <span data-testid="password-error-message">{errMsg['password']}</span>}
+          {passwordError && (
+            <span data-testid="password-error-message">
+              {errMsg["password"]}
+            </span>
+          )}
         </div>
         <button onClick={handleSubmit}>로그인</button>
       </form>
-      {status === "resolved"&& <div>로그인 성공</div>}
+      {status === "resolved" && <div>로그인 성공</div>}
       {status === "pending" && <div>Loading...</div>}
     </>
   );
