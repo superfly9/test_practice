@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { MouseEvent, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { errMsg, idRegex, passwordRegex } from "../../constant/login";
 import useInputChange from "../../hooks/useInputChange";
@@ -28,14 +28,8 @@ function Login() {
 
   const navigate = useNavigate();
 
-<<<<<<< HEAD:src/components/Login/Login.js
   const validatorHandler = () =>{
-=======
-  const handleSubmit = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-
->>>>>>> main:src/components/Login/Login.tsx
+    
       const isValidId = idValidator();
       const isValidPassword = passwordValidator();
       let notValid = false;
@@ -49,7 +43,7 @@ function Login() {
   }
 
   const handleSubmit = useCallback(
-    async (e) => {
+    async (e:MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       const isNotValid = validatorHandler()
       if(isNotValid) return;
