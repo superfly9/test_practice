@@ -33,19 +33,24 @@ function Login() {
 
   const navigate = useNavigate();
 
+  const validatorHandler = () =>{
+      const isValidId = idValidator();
+      const isValidPassword = passwordValidator();
+      let notValid = false;
+
+      setPasswordError(isValidPassword ? false : true)
+      setIdError(isValidId ? false : true) 
+
+      if (!isValidId || !isValidPassword) notValid = true;
+
+      return notValid;
+  }
+
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-
-      const isValidId = idValidator();
-      const isValidPassword = passwordValidator();
-
-      if (!isValidId || !isValidPassword) {
-        setIdError(isValidId ? false : true);
-        setPasswordError(isValidPassword ? false : true);
-
-        return;
-      }
+      const isNotValid = validatorHandler()
+      if(isNotValid) return;
 
       setStatus("pending");
       try {
